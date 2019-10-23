@@ -31,6 +31,7 @@ const StopWatch = () => {
 
   return (
     <Wrap>
+    <h2>Stop Watch</h2>
       <Timer>{formatTime(elapsedTime)}</Timer>
       <ButtonWrap>
         <Button
@@ -49,7 +50,10 @@ const StopWatch = () => {
       <ButtonWrap>
         <Countdown />
       </ButtonWrap>
-      {laps.length > 0 && <Result laps={laps} />}
+      
+        <h2>Show result for split time</h2>
+        {laps.length > 0 && <Result laps={laps} />}
+      
     </Wrap>
   );
 };
@@ -71,7 +75,7 @@ function formatTime(t) {
 }
 
 const Timer = styled.h1`
-  font-size: 5em;
+  font-size: 4em;
   font-weight: normal;
 `;
 

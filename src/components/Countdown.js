@@ -38,6 +38,7 @@ const Countdown = () => {
 
   return (
     <Wrap>
+    <h1>Time Left: {timeLeft}</h1>
       <ButtonWrap>
         <CountdownButton time="5" onClick={startCountdown5}>
           {"5 sec"}
@@ -49,7 +50,6 @@ const Countdown = () => {
           {"15 sec"}
         </CountdownButton>
       </ButtonWrap>
-      <h1>Time Left: {timeLeft}</h1>
     </Wrap>
   );
 };
@@ -69,7 +69,7 @@ const Wrap = styled.div`
   margin: 0 auto;
   text-align: center;
   font-family: sans-serif;
-  font-size: 22px;
+  font-size: 18px;
 `;
 
 export default Countdown;
