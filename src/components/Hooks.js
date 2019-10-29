@@ -1,42 +1,45 @@
 import { useState, useEffect } from "react";
 
-export const useTimer = () => {
+const useTimer = () => {
   const [runTimer, setRunTimer] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const [startTime, setStartTime] = useState(0);
+  const [, setRefresh] = useState(false);
 
-  useEffect(
-    () => {
-      let interval;
-      if (runTimer) {
-        interval = setInterval(
-          () => setElapsedTime(prevElapsedTime => prevElapsedTime + 0.1),
-          100
-        );
-      }
-      return () => clearInterval(interval);
-    },
-    [runTimer]
-  );
+  // Start button clicked
+  useEffect(() => {
+    let interval;
+    setStartTime(Date.now());
+    if (runTimer) {
+      interval = setInterval(() => setRefresh(x => !x), 25);
+    }
+    return () => {
+      clearInterval(interval);
+      setStartTime(0);
+    }
+  }, [runTimer]);
 
   return {
     runTimer,
     setRunTimer,
-    elapsedTime,
-    setElapsedTime
+    startTime,
+    setStartTime
   };
 };
 
-export const useStopwatch = () => {
+const useStopwatch = () => {
   const [laps, setLaps] = useState([]);
-  const { runTimer, setRunTimer, elapsedTime, setElapsedTime } = useTimer();
+  const { runTimer, setRunTimer, startTime, setStartTime } = useTimer();
 
+  // Reset button clicked
   const handleReset = () => {
     setRunTimer(false);
-    setElapsedTime(0);
+    setStartTime(0);
     setLaps([]);
   };
 
+  // Show Result button clicked, add row with current time
   const handleAddLap = () => {
+    var elapsedTime = Date.now() - startTime;
     const prevTotal =
       laps.length > 0 ? laps.reduce((acc, curr) => acc + curr, 0) : 0;
     const currentLap = laps.length > 0 ? elapsedTime - prevTotal : elapsedTime;
@@ -44,7 +47,7 @@ export const useStopwatch = () => {
   };
 
   return {
-    elapsedTime: elapsedTime.toFixed(1),
+    startTime: startTime,
     laps,
     addLap: () => handleAddLap(),
     resetTimer: () => handleReset(),
@@ -53,3 +56,5 @@ export const useStopwatch = () => {
     runTimer
   };
 };
+
+export { useTimer, useStopwatch };

@@ -22,7 +22,7 @@ const Result = ({ laps }) => {
         return (
           <Item key={i} status={getLapStatus()}>
             Result {i + 1}
-            <span>{+lap.toFixed(1)}s</span>
+            <span>{+(lap / 1000).toFixed(3)}s</span>
           </Item>
         );
       })}

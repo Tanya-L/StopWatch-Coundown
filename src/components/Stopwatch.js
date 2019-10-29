@@ -11,11 +11,14 @@ const StopWatch = () => {
     laps,
     addLap,
     runTimer,
-    elapsedTime,
+    startTime,
     startTimer,
     stopTimer,
-    resetTimer
+    resetTimer,
   } = useStopwatch();
+  
+
+  
 
   const handleStartStop = () => {
     runTimer ? stopTimer() : startTimer();
@@ -32,7 +35,7 @@ const StopWatch = () => {
   return (
     <Wrap>
     <h2>Stop Watch</h2>
-      <Timer>{formatTime(elapsedTime)}</Timer>
+      <Timer>{formatTime(runTimer ? Date.now() - startTime : 0)}</Timer>
       <ButtonWrap>
         <Button
           onClick={handleStartStop}
@@ -43,7 +46,7 @@ const StopWatch = () => {
 
         <Button onClick={handleLap}>{"Show Result"}</Button>
 
-        <Button disabled={elapsedTime === "0.0"} onClick={handleReset}>
+        <Button disabled={startTime === "0.0"} onClick={handleReset}>
           {"Reset"}
         </Button>
       </ButtonWrap>
@@ -58,19 +61,23 @@ const StopWatch = () => {
   );
 };
 
-function formatTime(t) {
-  var hrs = ~~(t / 3600);
-  var mins = ~~((t % 3600) / 60);
-  var secs = ~~t % 60;
+// format time miliseconds
+function formatTime(timerMs) {
+  if (timerMs === 0) {
+    return "00:00:00";
+  } 
+  timerMs /= 1000;
+  let hours = Math.floor(timerMs / 3600);
+  timerMs %= 3600;
+  let minutes = Math.floor(timerMs / 60);
+  timerMs %= 60;
+  let seconds = Math.floor(timerMs);
 
-  // Output like "1:01" or "4:03:59"
   var ret = "";
 
-  if (hrs > 0) {
-    ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-  }
-  ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-  ret += "" + secs;
+    ret += (hours < 10 ? "0" : "") + hours 
+      + ":" + (minutes < 10 ? "0" : "") + minutes 
+      + ":" + (seconds < 10 ? "0" : "") + seconds;
   return ret;
 }
 
